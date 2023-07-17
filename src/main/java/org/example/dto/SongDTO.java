@@ -6,8 +6,9 @@ import lombok.*;
 @Getter
 @Setter
 @Builder
+@NoArgsConstructor
 public class SongDTO {
     private Long id;
     private String name;
-    private SingerDTO singer;
+    private String singer;
 }

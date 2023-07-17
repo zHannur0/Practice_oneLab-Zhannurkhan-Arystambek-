@@ -1,40 +1,51 @@
 package org.example.repository;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.Setter;
 import org.example.dto.SongDTO;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.BeanPropertyRowMapper;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Repository
-@AllArgsConstructor
 public class SongRepository {
-    private final List<SongDTO> songs = new ArrayList<>();
+    private final JdbcTemplate jdbcTemplate;
 
-    public SongDTO save(SongDTO song) {
-        songs.add(song);
-        return song;
+    @Autowired
+    public SongRepository(JdbcTemplate jdbcTemplate) {
+        jdbcTemplate.execute("CREATE TABLE Song (id BIGINT PRIMARY KEY AUTO_INCREMENT, name VARCHAR(255), singer VARCHAR(255));");
+        this.jdbcTemplate = jdbcTemplate;
     }
 
     public List<SongDTO> selectAll() {
-        return songs;
+        return jdbcTemplate.query("SELECT * FROM Song", new BeanPropertyRowMapper<>(SongDTO.class));
     }
 
-    public SongDTO selectById(Long id) {
-        return songs.stream().filter(song -> song.getId().equals(id)).findFirst().orElse(null);
+    public SongDTO show(long id) {
+        RowMapper<SongDTO> rowMapper = (rs, rowNum) -> {
+            SongDTO songDTO = new SongDTO();
+            songDTO.setId(rs.getLong("id"));
+            songDTO.setName(rs.getString("name"));
+            songDTO.setSinger(rs.getString("singer"));
+            return songDTO;
+        };
+
+        return jdbcTemplate.query("SELECT * FROM Song WHERE id=?", rowMapper, id).stream().findFirst().orElse(null);
     }
 
-    public void updateName(Long id, String name) {
-        SongDTO song = selectById(id);
-        song.setName(name);
+    public void save(SongDTO song) {
+        jdbcTemplate.update("INSERT INTO Song VALUES(1, ?, ?)", song.getName(), song.getSinger());
     }
 
-    public void deleteById(Long id) {
-        songs.removeIf(song -> song.getId().equals(id));
+    public void update(long id,SongDTO updatedSong) {
+        jdbcTemplate.update("UPDATE Song SET name=?, singer=? WHERE id=?", updatedSong.getName(),
+                updatedSong.getSinger(), id);
     }
 
+    public void delete(long id) {
+        jdbcTemplate.update("DELETE FROM Song WHERE id=?", id);
+    }
 
 
 }

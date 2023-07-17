@@ -5,15 +5,13 @@ import lombok.*;
 import java.util.List;
 
 @AllArgsConstructor
+@NoArgsConstructor
 @Getter
 @Setter
 @Builder
 public class SingerDTO {
      private Long id;
      private String name;
-     private List<SongDTO> songs;
+     private String songName;
 
-     public void addSongs(SongDTO song) {
-          songs.add(song);
-     }
 }

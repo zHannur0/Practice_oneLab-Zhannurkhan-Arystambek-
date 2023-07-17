@@ -5,28 +5,49 @@ import org.example.dto.PlaylistDTO;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import org.example.dto.PlaylistSongsDTO;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.BeanPropertyRowMapper;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
 @Repository
-@AllArgsConstructor
 public class PlaylistRepository {
-    private final List<PlaylistDTO> playlists = new ArrayList<>();
+    private final JdbcTemplate jdbcTemplate;
 
-    public PlaylistDTO save(PlaylistDTO playlist) {
-        playlists.add(playlist);
-        return playlist;
+    @Autowired
+    public PlaylistRepository(JdbcTemplate jdbcTemplate) {
+        jdbcTemplate.execute("CREATE TABLE playlist (id BIGINT PRIMARY KEY AUTO_INCREMENT, name VARCHAR(255)) ");
+        this.jdbcTemplate = jdbcTemplate;
     }
 
     public List<PlaylistDTO> selectAll() {
-        return playlists;
+        return jdbcTemplate.query("SELECT * FROM Playlist", new BeanPropertyRowMapper<>(PlaylistDTO.class));
     }
 
-    public PlaylistDTO selectById(Long id) {
-        return playlists.stream().filter(playlist -> playlist.getId().equals(id)).findFirst().orElse(null);
+    public PlaylistDTO show(long id) {
+        RowMapper<PlaylistDTO> rowMapper = (rs, rowNum) -> {
+            PlaylistDTO playlistDTO = new PlaylistDTO();
+            playlistDTO.setId(rs.getLong("id"));
+            playlistDTO.setName(rs.getString("name"));
+            return playlistDTO;
+        };
+
+        return jdbcTemplate.query("SELECT * FROM Playlist WHERE id=?", rowMapper, id).stream().findFirst().orElse(null);
     }
 
-    public void updateName(Long id, String name) {
-        PlaylistDTO playlist = selectById(id);
-        playlist.setName(name);
+    public void save(PlaylistDTO playlist) {
+        jdbcTemplate.update("INSERT INTO Playlist VALUES(1, ?)", playlist.getName());
+    }
+
+    public void update(long id,PlaylistDTO playlistSongs) {
+        jdbcTemplate.update("UPDATE Playlist SET name=? WHERE id=?", playlistSongs.getName(),
+                 id);
+    }
+
+    public void delete(long id) {
+        jdbcTemplate.update("DELETE FROM Playlist WHERE id=?", id);
     }
 }
