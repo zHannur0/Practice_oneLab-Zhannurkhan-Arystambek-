@@ -7,10 +7,12 @@ import org.aspectj.lang.annotation.Before;
 import org.aspectj.lang.annotation.Pointcut;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.stereotype.Component;
 
 @Aspect
 @Component
+@EnableAspectJAutoProxy(proxyTargetClass = true)
 public class SingerRepositoryLoggerAspect {
 
     private static final Logger logger = LoggerFactory.getLogger(SingerRepositoryLoggerAspect.class);
