@@ -14,8 +14,8 @@ public class SongRepository {
 
     @Autowired
     public SongRepository(JdbcTemplate jdbcTemplate) {
-        jdbcTemplate.execute("CREATE TABLE Song (id BIGINT PRIMARY KEY AUTO_INCREMENT, name VARCHAR(255), singer VARCHAR(255));");
         this.jdbcTemplate = jdbcTemplate;
+//        this.jdbcTemplate.execute("CREATE TABLE Song (id BIGINT PRIMARY KEY AUTO_INCREMENT, name VARCHAR(255), singer VARCHAR(255));");
     }
 
     public List<SongDTO> selectAll() {
@@ -35,7 +35,7 @@ public class SongRepository {
     }
 
     public void save(SongDTO song) {
-        jdbcTemplate.update("INSERT INTO Song VALUES(1, ?, ?)", song.getName(), song.getSinger());
+        jdbcTemplate.update("INSERT INTO Song (name, singer) VALUES(?, ?)", song.getName(), song.getSinger());
     }
 
     public void update(long id,SongDTO updatedSong) {

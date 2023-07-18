@@ -10,18 +10,29 @@ import org.example.repository.PlaylistRepository;
 import org.example.repository.PlaylistSongsRepository;
 import org.example.repository.SingerRepository;
 import org.example.repository.SongRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
-@AllArgsConstructor
 public class MusicService {
     private final PlaylistRepository playlistRepository;
     private final PlaylistSongsRepository playlistSongsRepository;
     private final SingerRepository singerRepository;
     private final SongRepository songRepository;
+
+    @Autowired
+    public MusicService(PlaylistRepository playlistRepository,
+                        PlaylistSongsRepository playlistSongsRepository,
+                        SingerRepository singerRepository,
+                        SongRepository songRepository) {
+        this.playlistRepository = playlistRepository;
+        this.playlistSongsRepository = playlistSongsRepository;
+        this.singerRepository = singerRepository;
+        this.songRepository = songRepository;
+    }
 
     public void allSingers() {
         List<SingerDTO> singers = singerRepository.selectAll();

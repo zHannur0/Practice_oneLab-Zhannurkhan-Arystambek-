@@ -20,8 +20,8 @@ public class SingerRepository {
     @Autowired
     public SingerRepository(JdbcTemplate jdbcTemplate)
     {
-        jdbcTemplate.execute("CREATE TABLE Singer (id BIGINT PRIMARY KEY AUTO_INCREMENT, name VARCHAR(255), songName VARCHAR(255));");
         this.jdbcTemplate = jdbcTemplate;
+       // this.jdbcTemplate.execute("CREATE TABLE Singer (id BIGINT PRIMARY KEY AUTO_INCREMENT, name VARCHAR(255), songName VARCHAR(255));");
     }
 
     public List<SingerDTO> selectAll() {
@@ -41,7 +41,7 @@ public class SingerRepository {
     }
 
     public void save(SingerDTO singer) {
-        jdbcTemplate.update("INSERT INTO Singer VALUES(1, ?, ?)", singer.getName(), singer.getSongName());
+        jdbcTemplate.update("INSERT INTO Singer (name, songName) VALUES(?, ?)", singer.getName(), singer.getSongName());
     }
 
     public void update(long id,SingerDTO updatedSinger) {

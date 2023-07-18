@@ -19,9 +19,11 @@ public class PlaylistRepository {
 
     @Autowired
     public PlaylistRepository(JdbcTemplate jdbcTemplate) {
-        jdbcTemplate.execute("CREATE TABLE playlist (id BIGINT PRIMARY KEY AUTO_INCREMENT, name VARCHAR(255)) ");
         this.jdbcTemplate = jdbcTemplate;
+        //this.jdbcTemplate.execute("CREATE TABLE playlist (id BIGINT PRIMARY KEY AUTO_INCREMENT, name VARCHAR(255)) ");
     }
+
+
 
     public List<PlaylistDTO> selectAll() {
         return jdbcTemplate.query("SELECT * FROM Playlist", new BeanPropertyRowMapper<>(PlaylistDTO.class));
@@ -39,7 +41,7 @@ public class PlaylistRepository {
     }
 
     public void save(PlaylistDTO playlist) {
-        jdbcTemplate.update("INSERT INTO Playlist VALUES(1, ?)", playlist.getName());
+        jdbcTemplate.update("INSERT INTO Playlist (name) VALUES(?)", playlist.getName());
     }
 
     public void update(long id,PlaylistDTO playlistSongs) {

@@ -15,7 +15,7 @@ public class SingerRepositoryLoggerAspect {
 
     private static final Logger logger = LoggerFactory.getLogger(SingerRepositoryLoggerAspect.class);
 
-    @Pointcut("execution(* org.example.repository.SingerRepository.save(..))")
+    @Pointcut("execution(* org.example.service.MusicService.saveSinger(..))")
     public void savePointcut() {}
 
     @Before("savePointcut()")
