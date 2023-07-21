@@ -1,39 +1,36 @@
 package org.example;
 
+import jakarta.persistence.Entity;
 import org.example.config.SpringConfig;
-import org.example.dto.PlaylistDTO;
-import org.example.dto.PlaylistSongsDTO;
-import org.example.dto.SingerDTO;
-import org.example.dto.SongDTO;
-import org.example.repository.PlaylistRepository;
-import org.example.repository.SingerRepository;
-import org.example.service.MusicService;
-import org.springframework.context.ApplicationContext;
+import org.example.model.Playlist;
+import org.example.service.PlaylistService;
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.autoconfigure.domain.EntityScan;
+import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import org.springframework.context.annotation.Configuration;
 
-import java.util.ArrayList;
+import java.util.List;
 
+@Configuration
+@SpringBootApplication(exclude = {DataSourceAutoConfiguration.class})
 public class Main {
+
     public static void main(String[] args) {
         AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(SpringConfig.class);
+        SpringApplication.run(Main.class, args);
 
-        MusicService musicService = context.getBean(MusicService.class);
+        PlaylistService playlistService = context.getBean(PlaylistService.class);
 
-        SingerDTO singer1 = SingerDTO.builder().id(1L).name("Lil Zhannurkhan").songName("Redbone").build();
-        SingerDTO singer2 = SingerDTO.builder().id(2L).name("Childish Gambino").songName("Zhazda apamnyn auylyna").build();
+        List<Playlist> playlistList = playlistService.getAllPlaylists();
 
-        //musicService.saveSinger(singer1);
-        musicService.saveSinger(singer1);
+        for(Playlist playlist: playlistList){
+            System.out.println(playlist.getPlaylistName());
+        }
 
 
-        SongDTO song1 = SongDTO.builder().id(1L).name("Redbone").singer("Zhanik").build();
-        SongDTO song2 = SongDTO.builder().id(2L).name("Zhazda apamnyn auyalyna").singer("Erbo").build();
-
-        PlaylistDTO playlist = PlaylistDTO.builder().id(1L).name("Top playlist").build();
-
-        PlaylistSongsDTO playlistSongs1 = PlaylistSongsDTO.builder().id(1L).playlistId(1L).songId(2L).build();
-        PlaylistSongsDTO playlistSongs2 = PlaylistSongsDTO.builder().id(1L).playlistId(1L).songId(1L).build();
-
-        musicService.allSingers();
     }
 }

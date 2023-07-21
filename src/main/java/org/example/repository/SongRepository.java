@@ -1,51 +1,24 @@
 package org.example.repository;
-import org.example.dto.SongDTO;
+import org.example.mapper.SongMapper;
+import org.example.model.Song;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Example;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.repository.NoRepositoryBean;
+import org.springframework.data.repository.query.FluentQuery;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
+import java.util.function.Function;
 
 @Repository
-public class SongRepository {
-    private final JdbcTemplate jdbcTemplate;
-
-    @Autowired
-    public SongRepository(JdbcTemplate jdbcTemplate) {
-        this.jdbcTemplate = jdbcTemplate;
-//        this.jdbcTemplate.execute("CREATE TABLE Song (id BIGINT PRIMARY KEY AUTO_INCREMENT, name VARCHAR(255), singer VARCHAR(255));");
-    }
-
-    public List<SongDTO> selectAll() {
-        return jdbcTemplate.query("SELECT * FROM Song", new BeanPropertyRowMapper<>(SongDTO.class));
-    }
-
-    public SongDTO show(long id) {
-        RowMapper<SongDTO> rowMapper = (rs, rowNum) -> {
-            SongDTO songDTO = new SongDTO();
-            songDTO.setId(rs.getLong("id"));
-            songDTO.setName(rs.getString("name"));
-            songDTO.setSinger(rs.getString("singer"));
-            return songDTO;
-        };
-
-        return jdbcTemplate.query("SELECT * FROM Song WHERE id=?", rowMapper, id).stream().findFirst().orElse(null);
-    }
-
-    public void save(SongDTO song) {
-        jdbcTemplate.update("INSERT INTO Song (name, singer) VALUES(?, ?)", song.getName(), song.getSinger());
-    }
-
-    public void update(long id,SongDTO updatedSong) {
-        jdbcTemplate.update("UPDATE Song SET name=?, singer=? WHERE id=?", updatedSong.getName(),
-                updatedSong.getSinger(), id);
-    }
-
-    public void delete(long id) {
-        jdbcTemplate.update("DELETE FROM Song WHERE id=?", id);
-    }
-
+public interface SongRepository extends JpaRepository<Song, Long> {
 
 }

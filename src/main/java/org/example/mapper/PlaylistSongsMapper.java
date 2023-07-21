@@ -1,4 +1,4 @@
-package org.example.dto;
+package org.example.mapper;
 
 
 import lombok.*;
@@ -10,8 +10,7 @@ import lombok.*;
 @Builder
 @NoArgsConstructor
 
-public class PlaylistSongsDTO {
-    Long id;
+public class PlaylistSongsMapper {
     Long playlistId;
     Long songId;
 }
