@@ -10,4 +10,5 @@ import org.springframework.stereotype.Repository;
 
 public interface SingerRepository extends JpaRepository<Singer, Long> {
 
+    Singer findSingerBySingerNameAndCountry(String singerName, String country);
 }

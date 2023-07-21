@@ -21,4 +21,5 @@ import java.util.function.Function;
 @Repository
 public interface SongRepository extends JpaRepository<Song, Long> {
 
+    void deleteBySongTitle(String songTitle);
 }

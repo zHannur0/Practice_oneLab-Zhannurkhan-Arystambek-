@@ -10,6 +10,7 @@ import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
+import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.annotation.Configuration;
 
@@ -20,8 +21,7 @@ import java.util.List;
 public class Main {
 
     public static void main(String[] args) {
-        AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(SpringConfig.class);
-        SpringApplication.run(Main.class, args);
+        ConfigurableApplicationContext context = SpringApplication.run(Main.class, args);
 
         PlaylistService playlistService = context.getBean(PlaylistService.class);
 
