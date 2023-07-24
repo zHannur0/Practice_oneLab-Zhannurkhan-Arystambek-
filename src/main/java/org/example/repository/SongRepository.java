@@ -1,5 +1,7 @@
 package org.example.repository;
 import org.example.mapper.SongMapper;
+import org.example.model.Playlist;
+import org.example.model.Singer;
 import org.example.model.Song;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
@@ -22,4 +24,21 @@ import java.util.function.Function;
 public interface SongRepository extends JpaRepository<Song, Long> {
 
     void deleteBySongTitle(String songTitle);
+
+    List<Song> findBySinger(Singer singer);
+
+    List<Song> findByPlaylistSetContains(Playlist playlist);
+
+    List<Song> findBySongTitleOrderBySongTitleAsc(String songTitle);
+
+    List<Song> findBySingerAndPlaylistSetContains(Singer singer, Playlist playlist);
+
+    void deleteBySinger(Singer singer);
+
+    void deleteByPlaylistSetContains(Playlist playlist);
+
+    long countBySinger(Singer singer);
+
+    long countByPlaylistSetContains(Playlist playlist);
+
 }

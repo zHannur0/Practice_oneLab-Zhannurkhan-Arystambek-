@@ -35,5 +35,37 @@ public class SingerService {
         singerIds.forEach(singerRepository::deleteById);
     }
 
+    public long countSingersByCountry(String country) {
+        return singerRepository.countByCountry(country);
+    }
+
+
+    public Singer getSingerById(Long singerId) {
+        return singerRepository.findById(singerId).orElse(null);
+    }
+
+    public List<Singer> getSingersByCountry(String country) {
+        return singerRepository.findByCountry(country);
+    }
+
+    public List<Singer> getSingersByGenreAndCountry(String genre, String country) {
+        return singerRepository.findByGenreAndCountry(genre, country);
+    }
+
+    public long countSingersByGenre(String genre) {
+        return singerRepository.countByGenre(genre);
+    }
+
+
+    @Transactional
+    public void deleteSingerById(Long singerId) {
+        singerRepository.deleteById(singerId);
+    }
+
+    @Transactional
+    public void deleteSingersByCountry(String country) {
+        List<Singer> singersToDelete = singerRepository.findByCountry(country);
+        singerRepository.deleteAll(singersToDelete);
+    }
 
 }

@@ -15,6 +15,7 @@ import java.util.Set;
 @Table(name = "singers")
 @NoArgsConstructor
 @AllArgsConstructor
+@ToString
 public class Singer {
 
     @Id
@@ -30,5 +31,4 @@ public class Singer {
 
     @Column(name = "country", length = 50)
     private String country;
-
 }
