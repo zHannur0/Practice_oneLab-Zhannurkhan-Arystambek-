@@ -45,6 +45,10 @@ public class SongService {
         return songRepository.findBySingerAndPlaylistSetContains(singer, playlist);
     }
 
+    public Song getSongById(long id) {
+        return songRepository.findById(id).orElse(null);
+    }
+
     public void deleteSongsBySinger(Singer singer) {
         songRepository.deleteBySinger(singer);
     }
@@ -66,8 +70,16 @@ public class SongService {
         songRepository.saveAll(songs);
     }
 
+    public void saveSong(Song song) {
+        songRepository.save(song);
+    }
+
     @Transactional
     public void deleteAllSongs(List<Long> songIds) {
         songIds.forEach(songRepository::deleteById);
+    }
+
+    public void deleteSongById(long id) {
+        songRepository.deleteById(id);
     }
 }

@@ -1,5 +1,6 @@
 package org.example.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -15,6 +16,7 @@ import java.util.Set;
 @Table(name = "singers")
 @NoArgsConstructor
 @AllArgsConstructor
+@JsonIgnoreProperties({ "songs" })
 @ToString
 public class Singer {
 
@@ -31,4 +33,8 @@ public class Singer {
 
     @Column(name = "country", length = 50)
     private String country;
+
+    @ToString.Exclude
+    @OneToMany(mappedBy = "singer", cascade = CascadeType.REMOVE)
+    private Set<Song> songs = new HashSet<>();
 }

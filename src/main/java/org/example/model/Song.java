@@ -1,5 +1,6 @@
 package org.example.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -14,6 +15,8 @@ import java.util.Set;
 @Table(name = "songs")
 @NoArgsConstructor
 @AllArgsConstructor
+@JsonIgnoreProperties({ "playlistSet"  })
+@ToString
 public class Song {
 
     @Id
@@ -28,6 +31,7 @@ public class Song {
     @JoinColumn(name = "singer_id")
     private Singer singer;
 
+    @ToString.Exclude
     @ManyToMany
     @JoinTable(name = "playlist_songs",
         joinColumns = @JoinColumn(name = "song_id"),

@@ -2,7 +2,6 @@ package org.example.service;
 
 
 import org.example.kafka.KafkaProducer;
-import org.example.model.Playlist;
 import org.example.model.Singer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

@@ -28,6 +28,11 @@ public class PlaylistService {
         return playlistRepository.findByPlaylistNameOrderByPlaylistNameAsc(playlistName);
     }
 
+    public Playlist getPlaylistById(long id) {
+
+        return playlistRepository.findById(id).orElse(null);
+    }
+
     @Transactional
     public void deletePlaylistByPlaylistName(String playlistName) {
         playlistRepository.deleteByPlaylistName(playlistName);
@@ -40,6 +45,14 @@ public class PlaylistService {
 
     public long countPlaylistsBySongContaining(Song song) {
         return playlistRepository.countBySongsListContaining(song);
+    }
+
+    public void savePlaylist(Playlist playlist) {
+        playlistRepository.save(playlist);
+    }
+
+    public void deletePlaylistById(long id) {
+        playlistRepository.deleteById(id);
     }
 
 }

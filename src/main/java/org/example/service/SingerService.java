@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional(readOnly = true)
@@ -56,9 +57,8 @@ public class SingerService {
         return singerRepository.countByGenre(genre);
     }
 
-
-    @Transactional
     public void deleteSingerById(Long singerId) {
+
         singerRepository.deleteById(singerId);
     }
 
@@ -67,5 +67,10 @@ public class SingerService {
         List<Singer> singersToDelete = singerRepository.findByCountry(country);
         singerRepository.deleteAll(singersToDelete);
     }
+
+    public void saveSinger(Singer singer){
+        singerRepository.save(singer);
+    }
+
 
 }
