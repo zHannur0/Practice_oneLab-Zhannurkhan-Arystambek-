@@ -54,4 +54,9 @@ public class PlaylistController {
         playlistService.deletePlaylistById(id);
     }
 
+    @ResponseStatus(HttpStatus.OK)
+    @PostMapping(value = "{id}/{songId}")
+    public void addSongToPlaylist(@PathVariable long id,@PathVariable long songId) {
+        playlistService.addSongToPlaylist(songId, id);
+    }
 }

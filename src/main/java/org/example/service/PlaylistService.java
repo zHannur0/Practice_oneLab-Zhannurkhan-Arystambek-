@@ -13,11 +13,13 @@ import java.util.List;
 @Transactional(readOnly = true)
 public class PlaylistService {
 
+    private final SongService songService;
     private final PlaylistRepository playlistRepository;
 
     @Autowired
-    public PlaylistService(PlaylistRepository playlistRepository) {
+    public PlaylistService(PlaylistRepository playlistRepository, SongService songService) {
         this.playlistRepository = playlistRepository;
+        this.songService = songService;
     }
 
     public List<Playlist> getAllPlaylists() {
@@ -53,6 +55,15 @@ public class PlaylistService {
 
     public void deletePlaylistById(long id) {
         playlistRepository.deleteById(id);
+    }
+
+    public void addSongToPlaylist(Long songId, Long playlistId) {
+        Song song = songService.getSongById(songId);
+        Playlist playlist = playlistRepository.getPlaylistByPlaylistId(playlistId);
+
+        playlist.getSongsList().add(song);
+
+        playlistRepository.save(playlist);
     }
 
 }

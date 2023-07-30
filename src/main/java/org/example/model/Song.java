@@ -1,6 +1,7 @@
 package org.example.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -21,13 +22,16 @@ public class Song {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @JsonProperty("singerId")
     @Column(name = "song_id")
     private Long songId;
 
+    @JsonProperty("songTitle")
     @Column(name = "song_title", nullable = false, length = 200)
     private String songTitle;
 
     @ManyToOne
+    @JsonProperty("singer")
     @JoinColumn(name = "singer_id")
     private Singer singer;
 

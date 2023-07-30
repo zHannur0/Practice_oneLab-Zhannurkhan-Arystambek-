@@ -20,5 +20,6 @@ public interface PlaylistRepository extends JpaRepository<Playlist, Long> {
 
     long countBySongsListContaining(Song song);
 
+    Playlist getPlaylistByPlaylistId(long id);
 
 }

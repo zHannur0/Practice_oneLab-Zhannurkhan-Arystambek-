@@ -3,6 +3,7 @@ package org.example.service;
 
 import org.example.kafka.KafkaProducer;
 import org.example.model.Singer;
+import org.example.model.Song;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,7 +17,7 @@ public class KafkaJmsService {
         this.kafkaProducer = kafkaProducer;
     }
 
-    public void sendUser(String topic, Singer singer) {
-        kafkaProducer.sendUser(topic, singer);
+    public void newSong(String topic, Song song) {
+        kafkaProducer.newSong(topic, song);
     }
 }
