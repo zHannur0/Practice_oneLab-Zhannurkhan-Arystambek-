@@ -6,19 +6,29 @@ import org.example.model.Singer;
 import org.example.model.Song;
 import org.example.repository.SongRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.client.RestTemplate;
 
+import java.util.Base64;
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
 
 @Service
 @Transactional(readOnly = true)
 public class SongService {
     private final SongRepository songRepository;
+    private final RestTemplate restTemplate;
 
     @Autowired
-    public SongService(SongRepository songRepository) {
+    public SongService(SongRepository songRepository, RestTemplate restTemplate) {
+
         this.songRepository = songRepository;
+        this.restTemplate = restTemplate;
     }
 
     public List<Song> getAllSingers() {
@@ -81,5 +91,29 @@ public class SongService {
 
     public void deleteSongById(long id) {
         songRepository.deleteById(id);
+    }
+
+    @Transactional
+    public List<Song> getAllSongsBySingerId(long singerId) throws ExecutionException, InterruptedException {
+        String singerUrl = "http://localhost:8000/singers/" + singerId;
+        String username = "zhannurkhan";
+        String password = "123";
+
+        String credentials = username + ":" + password;
+        byte[] encodedCredentials = Base64.getEncoder().encode(credentials.getBytes());
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.set("Authorization", "Basic " + new String(encodedCredentials));
+        HttpEntity<String> requestEntity = new HttpEntity<>(headers);
+
+        CompletableFuture<Singer> singerCompletableFuture = CompletableFuture.supplyAsync(() -> restTemplate.exchange(
+                singerUrl,
+                HttpMethod.GET,
+                requestEntity,
+                Singer.class
+        ).getBody());
+
+        Singer singer = singerCompletableFuture.get();
+        return songRepository.findSongsBySinger(singer);
     }
 }

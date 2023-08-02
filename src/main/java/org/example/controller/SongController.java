@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 @RestController
 @RequestMapping(value = "/songs")
@@ -52,6 +53,12 @@ public class SongController {
     @DeleteMapping(value = "/{id}")
     public void deleteSong(@PathVariable long id) {
         songService.deleteSongById(id);
+    }
+
+    @ResponseStatus(HttpStatus.OK)
+    @GetMapping(value = "/bySingerId/{id}")
+    public List<Song> getSongsBySingerId(@PathVariable long id) throws ExecutionException, InterruptedException {
+        return songService.getAllSongsBySingerId(id);
     }
 
 }

@@ -33,6 +33,8 @@ public interface SongRepository extends JpaRepository<Song, Long> {
 
     List<Song> findBySingerAndPlaylistSetContains(Singer singer, Playlist playlist);
 
+    List<Song> findSongsBySinger(Singer singer);
+
     void deleteBySinger(Singer singer);
 
     void deleteByPlaylistSetContains(Playlist playlist);
@@ -40,5 +42,7 @@ public interface SongRepository extends JpaRepository<Song, Long> {
     long countBySinger(Singer singer);
 
     long countByPlaylistSetContains(Playlist playlist);
+
+
 
 }

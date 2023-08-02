@@ -1,6 +1,7 @@
 package org.example.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.example.mapper.SingerMapper;
 import org.example.model.Singer;
 import org.example.repository.SingerRepository;
 import org.example.service.PlaylistService;
@@ -57,7 +58,7 @@ public class SingerControllerIntegrationTest {
     @Test
     public void testGetSingerById() throws Exception {
         long singerId = 1L;
-        when(singerService.getSingerById(singerId)).thenReturn(new Singer());
+        when(singerService.getSingerById(singerId)).thenReturn(new SingerMapper(1L,  "Zhannurkhan Arystambek", "Pop", "Kazakhstan"));
 
         mockMvc.perform(MockMvcRequestBuilders.get("/singers/" + singerId)
                         .accept(MediaType.APPLICATION_JSON))

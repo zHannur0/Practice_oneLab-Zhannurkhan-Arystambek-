@@ -22,7 +22,7 @@ public class Song {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @JsonProperty("singerId")
+    @JsonProperty("songId")
     @Column(name = "song_id")
     private Long songId;
 

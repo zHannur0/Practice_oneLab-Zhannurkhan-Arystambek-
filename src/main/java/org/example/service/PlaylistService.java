@@ -1,5 +1,6 @@
 package org.example.service;
 
+import org.example.mapper.PlaylistMapper;
 import org.example.model.Playlist;
 import org.example.model.Song;
 import org.example.repository.PlaylistRepository;
@@ -22,17 +23,17 @@ public class PlaylistService {
         this.songService = songService;
     }
 
-    public List<Playlist> getAllPlaylists() {
-        return playlistRepository.findAll();
+    public List<PlaylistMapper> getAllPlaylists() {
+        return playlistMappers(playlistRepository.findAll());
     }
 
-    public List<Playlist> getPlaylistsByPlaylistNameAsc(String playlistName) {
-        return playlistRepository.findByPlaylistNameOrderByPlaylistNameAsc(playlistName);
+    public List<PlaylistMapper> getPlaylistsByPlaylistNameAsc(String playlistName) {
+        return playlistMappers(playlistRepository.findByPlaylistNameOrderByPlaylistNameAsc(playlistName));
     }
 
-    public Playlist getPlaylistById(long id) {
+    public PlaylistMapper getPlaylistById(long id) {
 
-        return playlistRepository.findById(id).orElse(null);
+        return playlistMapper(playlistRepository.findById(id).orElse(null));
     }
 
     @Transactional
@@ -66,5 +67,16 @@ public class PlaylistService {
         playlistRepository.save(playlist);
     }
 
+    private List<PlaylistMapper> playlistMappers(List<Playlist> playlistList) {
+        return playlistList.stream().map(
+                        playlist -> new PlaylistMapper(playlist.getPlaylistId(),
+                                playlist.getPlaylistName()))
+                .toList();
+    }
+
+    private PlaylistMapper playlistMapper(Playlist playlist) {
+        if(playlist == null) return null;
+        return new PlaylistMapper(playlist.getPlaylistId(), playlist.getPlaylistName());
+    }
 }
 

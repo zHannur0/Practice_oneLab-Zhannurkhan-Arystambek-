@@ -1,5 +1,6 @@
 package org.example.service;
 
+import org.example.mapper.PlaylistMapper;
 import org.example.mapper.SingerMapper;
 import org.example.model.Playlist;
 import org.example.model.Singer;
@@ -9,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Service
@@ -22,8 +24,8 @@ public class SingerService {
         this.singerRepository = singerRepository;
     }
 
-    public List<Singer> getAllSingers() {
-        return singerRepository.findAll();
+    public List<SingerMapper> getAllSingers() {
+        return singerMappers(singerRepository.findAll());
     }
 
     @Transactional
@@ -41,12 +43,12 @@ public class SingerService {
     }
 
 
-    public Singer getSingerById(Long singerId) {
-        return singerRepository.findById(singerId).orElse(null);
+    public SingerMapper getSingerById(Long singerId) {
+        return singerMapper(singerRepository.findById(singerId).orElse(null));
     }
 
-    public List<Singer> getSingersByCountry(String country) {
-        return singerRepository.findByCountry(country);
+    public List<SingerMapper> getSingersByCountry(String country) {
+        return singerMappers(singerRepository.findByCountry(country));
     }
 
     public List<Singer> getSingersByGenreAndCountry(String genre, String country) {
@@ -72,5 +74,22 @@ public class SingerService {
         singerRepository.save(singer);
     }
 
+
+    private List<SingerMapper> singerMappers(List<Singer> singers) {
+        return singers.stream().map(
+                        singer -> new SingerMapper(singer.getSingerId(),
+                                singer.getSingerName(),
+                                singer.getGenre(),
+                                singer.getCountry()))
+                .toList();
+    }
+
+    private SingerMapper singerMapper(Singer singer) {
+        if(singer == null) return null;
+        return new SingerMapper(singer.getSingerId(),
+                singer.getSingerName(),
+                singer.getGenre(),
+                singer.getCountry());
+    }
 
 }

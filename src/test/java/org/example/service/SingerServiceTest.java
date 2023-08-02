@@ -1,5 +1,6 @@
 package org.example.service;
 
+import org.example.mapper.SingerMapper;
 import org.example.model.Singer;
 import org.example.repository.SingerRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -7,6 +8,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.*;
 
@@ -23,15 +25,25 @@ class SingerServiceTest {
 
     private Singer singer1;
     private Singer singer2;
+    private SingerMapper singerMapper1;
+    private SingerMapper singerMapper2;
+
     private List<Singer> allSingers;
+    private List<SingerMapper> singerMappers;
 
     @BeforeEach
     void setUp() {
         singer1 = new Singer(1L, "Singer1", "Genre1", "Country1", new HashSet<>());
         singer2 = new Singer(2L, "Singer2", "Genre2", "Country2", new HashSet<>());
+        singerMapper1 = new SingerMapper(1L, "Singer1", "Genre1", "Country1");
+        singerMapper2 = new SingerMapper(2L, "Singer2", "Genre2", "Country2");
         allSingers = new ArrayList<>();
         allSingers.add(singer1);
         allSingers.add(singer2);
+
+        singerMappers = new ArrayList<>();
+        singerMappers.add(singerMapper1);
+        singerMappers.add(singerMapper2);
         MockitoAnnotations.openMocks(this);
     }
 
@@ -39,9 +51,9 @@ class SingerServiceTest {
     public void testGetAllSingers() {
         when(singerRepository.findAll()).thenReturn(allSingers);
 
-        List<Singer> result = singerService.getAllSingers();
+        List<SingerMapper> result = singerService.getAllSingers();
 
-        assertEquals(allSingers, result);
+        assertEquals(singerMappers, result);
     }
 
     @Test
@@ -81,9 +93,9 @@ class SingerServiceTest {
         Long singerId = 1L;
         when(singerRepository.findById(singerId)).thenReturn(Optional.of(singer1));
 
-        Singer result = singerService.getSingerById(singerId);
+        SingerMapper result = singerService.getSingerById(singerId);
 
-        assertEquals(singer1, result);
+        assertEquals(singerMapper1, result);
     }
 
     @Test
@@ -91,7 +103,7 @@ class SingerServiceTest {
         Long singerId = 999L;
         when(singerRepository.findById(singerId)).thenReturn(Optional.empty());
 
-        Singer result = singerService.getSingerById(singerId);
+        SingerMapper result = singerService.getSingerById(singerId);
 
         assertNull(result);
     }
@@ -101,9 +113,9 @@ class SingerServiceTest {
         String country = "Country1";
         when(singerRepository.findByCountry(country)).thenReturn(List.of(singer1));
 
-        List<Singer> result = singerService.getSingersByCountry(country);
+        List<SingerMapper> result = singerService.getSingersByCountry(country);
 
-        assertEquals(List.of(singer1), result);
+        assertEquals(List.of(singerMapper1), result);
     }
 
     @Test

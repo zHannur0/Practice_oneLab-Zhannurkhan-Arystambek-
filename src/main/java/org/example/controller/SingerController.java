@@ -6,7 +6,6 @@ import org.example.model.Singer;
 import org.example.service.SingerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
@@ -25,13 +24,13 @@ public class SingerController {
 
     @ResponseStatus(HttpStatus.OK)
     @GetMapping
-    public List<Singer> getSingers() {
+    public List<SingerMapper> getSingers() {
         return singerService.getAllSingers();
     }
 
     @ResponseStatus(HttpStatus.OK)
     @GetMapping(value = "/{id}")
-    public Singer getSinger(@PathVariable long id) {
+    public SingerMapper getSinger(@PathVariable long id) {
         return singerService.getSingerById(id);
     }
 

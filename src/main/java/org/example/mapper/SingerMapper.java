@@ -5,6 +5,4 @@ public record SingerMapper(Long singerId,
                            String genre,
                            String country
 ) {
-
-
 }

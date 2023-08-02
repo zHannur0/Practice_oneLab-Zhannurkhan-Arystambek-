@@ -1,6 +1,7 @@
 package org.example.kafka;
 
 import org.example.model.Singer;
+import org.example.model.Song;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.kafka.support.SendResult;
@@ -14,7 +15,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class KafkaSender {
     @KafkaListener(topics = "test", groupId = "myGroup")
-    public Singer listen(Singer singer) {
-        return singer;
+    public Song listen(Song song) {
+        return song;
     }
 }

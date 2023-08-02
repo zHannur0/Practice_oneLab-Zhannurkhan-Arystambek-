@@ -1,5 +1,6 @@
 package org.example.service;
 
+import org.example.mapper.PlaylistMapper;
 import org.example.model.Playlist;
 import org.example.model.Singer;
 import org.example.model.Song;
@@ -24,6 +25,10 @@ class PlaylistServiceTest {
 
     private Playlist playlist1;
     private Playlist playlist2;
+
+    private PlaylistMapper playlistMapper1;
+    private PlaylistMapper playlistMapper2;
+
     private Song song;
 
     @BeforeEach
@@ -32,6 +37,10 @@ class PlaylistServiceTest {
 
         playlist1 = new Playlist(1L, "Playlist1", new HashSet<>());
         playlist2 = new Playlist(2L, "Playlist2", new HashSet<>());
+
+
+        playlistMapper1 = new PlaylistMapper(1L, "Playlist1");
+        playlistMapper2 = new PlaylistMapper(2L, "Playlist2");
         MockitoAnnotations.openMocks(this);
     }
 
@@ -41,11 +50,16 @@ class PlaylistServiceTest {
         mockPlaylists.add(playlist1);
         mockPlaylists.add(playlist2);
 
+
+        List<PlaylistMapper> mockPlaylistMappers = new ArrayList<>();
+        mockPlaylistMappers.add(playlistMapper1);
+        mockPlaylistMappers.add(playlistMapper2);
+
         when(playlistRepository.findAll()).thenReturn(mockPlaylists);
 
-        List<Playlist> result = playlistService.getAllPlaylists();
+        List<PlaylistMapper> result = playlistService.getAllPlaylists();
 
-        assertEquals(mockPlaylists, result);
+        assertEquals(mockPlaylistMappers, result);
     }
 
     @Test
@@ -54,11 +68,16 @@ class PlaylistServiceTest {
         mockPlaylists.add(playlist1);
         mockPlaylists.add(playlist2);
 
+        List<PlaylistMapper> mockPlaylistMappers = new ArrayList<>();
+        mockPlaylistMappers.add(playlistMapper1);
+        mockPlaylistMappers.add(playlistMapper2);
+
+
         when(playlistRepository.findByPlaylistNameOrderByPlaylistNameAsc("Playlist1")).thenReturn(mockPlaylists);
 
-        List<Playlist> result = playlistService.getPlaylistsByPlaylistNameAsc("Playlist1");
+        List<PlaylistMapper> result = playlistService.getPlaylistsByPlaylistNameAsc("Playlist1");
 
-        assertEquals(mockPlaylists, result);
+        assertEquals(mockPlaylistMappers, result);
     }
 
     @Test
@@ -66,9 +85,9 @@ class PlaylistServiceTest {
         Long playlistId = 1L;
         when(playlistRepository.findById(playlistId)).thenReturn(Optional.of(playlist1));
 
-        Playlist result = playlistService.getPlaylistById(playlistId);
+        PlaylistMapper result = playlistService.getPlaylistById(playlistId);
 
-        assertEquals(playlist1, result);
+        assertEquals(playlistMapper1, result);
     }
 
     @Test
@@ -76,7 +95,7 @@ class PlaylistServiceTest {
         Long playlistId = 999L;
         when(playlistRepository.findById(playlistId)).thenReturn(Optional.empty());
 
-        Playlist result = playlistService.getPlaylistById(playlistId);
+        PlaylistMapper result = playlistService.getPlaylistById(playlistId);
 
         assertNull(result);
     }

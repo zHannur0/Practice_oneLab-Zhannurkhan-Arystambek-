@@ -1,6 +1,7 @@
 package org.example.controller;
 
 
+import org.example.mapper.PlaylistMapper;
 import org.example.model.Playlist;
 import org.example.service.PlaylistService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,14 +23,14 @@ public class PlaylistController {
 
     @ResponseStatus(HttpStatus.OK)
     @GetMapping
-    public List<Playlist> getPlaylists() {
+    public List<PlaylistMapper> getPlaylists() {
         return playlistService.getAllPlaylists();
     }
 
 
     @ResponseStatus(HttpStatus.OK)
     @GetMapping(value = "/{id}")
-    public Playlist getPlaylist(@PathVariable long id) {
+    public PlaylistMapper getPlaylist(@PathVariable long id) {
         return playlistService.getPlaylistById(id);
     }
 

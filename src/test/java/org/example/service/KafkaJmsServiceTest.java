@@ -10,6 +10,7 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -33,7 +34,7 @@ class KafkaJmsServiceTest {
     }
 
     @Test
-    void testSendSinger() {
+    void testSendSong() {
         String topic = "test";
 
         kafkaJmsService.newSong(topic, song);
